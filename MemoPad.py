@@ -25,11 +25,6 @@ F_SIZE = {'L':20, 'M':15, 'S':10}   # 文字サイズ
 
 # ---------------------------------------------------------------------------
 # memopad
-#
-# いろいろできるメモ帳を練習として制作．
-# データベースにメモを保存し，自由に編集可能．
-# カテゴリ別に保存することもでき，用途にあわせて見つけやすく．
-# ファイル出力も可能．さらに文字コードを指定可能．
 # ---------------------------------------------------------------------------
 # メインフレーム(アプリ本体)
 # ---------------------------------------------------------------------------
@@ -44,7 +39,6 @@ class MemoPad(tk.Frame):
         db.create_database()  # (ない場合)DB初期生成
         self.menu_create()
         self.home()
-   
     # ---------------------------------------------------------------------------
     # フレーム生成
     #
@@ -196,13 +190,12 @@ class MemoPad(tk.Frame):
         self.tree_frame = tk.Frame(self.main_frame)
         self.tree_frame.pack()
         self.main_tree = ttk.Treeview(self.tree_frame, padding=5, height=12)
-        self.main_tree["columns"] = (1, 2, 3)
+        self.main_tree["columns"] = (1, 2)
         self.main_tree["show"] = 'headings'
         self.main_tree.column(1, width=100)
-        self.main_tree.column(2, width=100)
-        self.main_tree.column(3, width=400)
+        self.main_tree.column(2, width=400)
         self.main_tree.heading(1, text="タイトル")
-        self.main_tree.heading(3, text="本文(抜粋)")
+        self.main_tree.heading(2, text="本文(抜粋)")
         self.main_tree_style = ttk.Style()
         self.main_tree_style.configure("Treeview", font=(self.font, F_SIZE['S']))
         self.main_tree_style.configure("Treeview.Heading", font=(self.font, F_SIZE['M'], tk.font.BOLD))
@@ -215,8 +208,9 @@ class MemoPad(tk.Frame):
         # アイテムの取得＆挿入
         # SQLからアイテム取得
         for i in db.select_memo():
+            print(i)
             text = i[3].replace('\n', ' ')
-            self.main_tree.insert('', tk.END, iid=i[0], values=(i[1], i[2], text[0:30]))
+            self.main_tree.insert('', tk.END, iid=i[0], values=(i[1], text[0:30]))
         self.main_tree.pack(side=tk.RIGHT, fill=tk.Y)
         
         # 出力/編集/削除
@@ -229,7 +223,7 @@ class MemoPad(tk.Frame):
         self.button_delete.bind('<1>', submit_delete)
         self.button_delete.pack(side=tk.LEFT, padx=15, pady=5)
         print(self.main_tree.focus())
-
+    
     # ---------------------------------------------------------------------------
     # 登録画面
     # ---------------------------------------------------------------------------

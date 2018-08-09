@@ -21,26 +21,13 @@ def create_database():
     c = sqlite3.connect(DBMANE)
     c.execute("PRAGMA foreign_keys = ON")
     try:
-        # categoryテーブルの定義
-        ddl = """
-        CREATE TABLE category
-        (
-            category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            category_name TEXT NOT NULL UNIQUE
-        )
-        """
-        c.execute(ddl)
-        # デフォルト：なし
-        c.execute("INSERT INTO category VALUES(1,'なし')")
         # itemテーブルの定義
         ddl = """
         CREATE TABLE items
         (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            category_id INTEGER NOT NULL,
             name TEXT NOT NULL,
             maintext TEXT,
-            FOREIGN KEY(category_id) REFERENCES category(category_id)
             ON UPDATE CASCADE ON DELETE CASCADE
         )
         """
@@ -78,10 +65,9 @@ def select_memo_one(id):
     c.execute("PRAGMA foreign_keys = ON")
     try:
         sql = """
-        SELECT id, name, category_name, maintext
-        FROM items as i, category as c
-        WHERE i.category_id = c.category_id
-        AND id = {}
+        SELECT id, name, maintext
+        FROM items, category
+        WHERE id = {}
         """.format(id)
         result = c.execute(sql)
         print('取得完了')
@@ -114,13 +100,13 @@ def select_memo_category(category):
 # ---------------------------------------------------------------------------
 def insert_memo(memo):
     c = sqlite3.connect(DBMANE)
-    c.execute("PRAGMA foreign_keys = ON")
     try:
         print(memo)
         sql = """
         INSERT INTO items(name, category_id, maintext)
         VALUES('{}', {}, '{}')
-        """.format(memo[0], memo[1], memo[2])
+        """.format(memo[0], 1, memo[1])
+        print(sql)
         c.execute(sql)
         c.commit()
         c.close()
