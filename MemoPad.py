@@ -134,8 +134,8 @@ class MemoPad(tk.Frame):
         self.main_tree["show"] = 'headings'
         self.main_tree.column(1, width=100)
         self.main_tree.column(2, width=400)
-        self.main_tree.heading(1, text="タイトル")
-        self.main_tree.heading(2, text="本文(抜粋)")
+        self.main_tree.heading(1, text="期限")
+        self.main_tree.heading(2, text="タスク")
         self.main_tree_style = ttk.Style()
         self.main_tree_style.configure("Treeview", font=(self.font, F_SIZE['S']))
         self.main_tree_style.configure("Treeview.Heading", font=(self.font, F_SIZE['M'], tk.font.BOLD))
@@ -178,7 +178,7 @@ class MemoPad(tk.Frame):
                 sub_win.destroy()
                 self.home()
             
-            title = str(self.memo_title.get())
+            title = str(self.memo_month.get() + '/' + self.memo_day.get() + ' ' + self.memo_hour.get() + ':' + self.memo_second.get())
             # タイトルが1文字以上20文字以下の場合のみ登録処理
             if len(title) < 1 :
                 sub_win = sw.SubWindow('登録失敗', 'タイトルを入力してください', self.font)
@@ -230,7 +230,7 @@ class MemoPad(tk.Frame):
                 sub_win.destroy()
                 self.home()
         
-            title = str(self.memo_title.get())
+            title = str(self.memo_month.get(), '-', self.memo_day.get(), '-', self.memo_hour.get(), '-', self.memo_second.get())
             # タイトルが1文字以上20文字以下の場合のみ登録処理
             if len(title) < 1 :
                 sub_win = sw.SubWindow('更新失敗', 'タイトルを入力してください', self.font)
@@ -252,7 +252,10 @@ class MemoPad(tk.Frame):
         self.label_menuname = tk.Label(self.main_frame, text='メモ編集', width=15, font=(self.font, F_SIZE['L']))
         self.label_menuname.pack(padx=5, pady=15)
         self.make_memo_frame()
-        self.memo_title.insert(tk.END, memo[1])
+        self.memo_month.insert(tk.END, memo[1].split('-')[0])
+        self.memo_day.insert(tk.END, memo[1].split('-')[1])
+        self.memo_hour.insert(tk.END, memo[1].split('-')[2])
+        self.memo_second.insert(tk.END, memo[1].split('-')[3])
         self.memo_input.insert(tk.END, memo[2])
         
         # 登録ボタン
@@ -266,27 +269,27 @@ class MemoPad(tk.Frame):
     def make_memo_frame(self):
         
         # タイトル
-        self.title_frame = tk.Frame(self.main_frame)
-        self.title_frame.pack(padx=45, pady=15, fill=tk.BOTH)
-        self.label_memo_title = tk.Label(self.title_frame, text='期限', font=(self.font, F_SIZE['S']))
-        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_title = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']), width=3)
-        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.month_frame = tk.Frame(self.main_frame)
+        self.month_frame.pack(padx=45, pady=15, fill=tk.BOTH)
+        self.label_memo_month = tk.Label(self.month_frame, text='期限', font=(self.font, F_SIZE['S']))
+        self.label_memo_month.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.memo_month = tk.Entry(self.month_frame, font=(self.font, F_SIZE['S']), width=3)
+        self.memo_month.pack(side=tk.LEFT, fill=tk.X, padx=5)
 
-        self.label_memo_title = tk.Label(self.title_frame, text='/', font=(self.font, F_SIZE['S']))
-        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=3)
-        self.memo_title = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']), width=3)
-        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.label_memo_day = tk.Label(self.month_frame, text='/', font=(self.font, F_SIZE['S']))
+        self.label_memo_day.pack(side=tk.LEFT, fill=tk.X, padx=3)
+        self.memo_day = tk.Entry(self.month_frame, font=(self.font, F_SIZE['S']), width=3)
+        self.memo_day.pack(side=tk.LEFT, fill=tk.X, padx=5)
 
-        self.label_memo_title = tk.Label(self.title_frame, text='', font=(self.font, F_SIZE['S']))
-        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=3)
-        self.memo_title = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']), width=3)
-        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.label_memo_hour = tk.Label(self.month_frame, text='', font=(self.font, F_SIZE['S']))
+        self.label_memo_hour.pack(side=tk.LEFT, fill=tk.X, padx=3)
+        self.memo_hour = tk.Entry(self.month_frame, font=(self.font, F_SIZE['S']), width=3)
+        self.memo_hour.pack(side=tk.LEFT, fill=tk.X, padx=5)
 
-        self.label_memo_title = tk.Label(self.title_frame, text=':', font=(self.font, F_SIZE['S']))
-        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=3)
-        self.memo_title = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']), width=3)
-        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.label_memo_second = tk.Label(self.month_frame, text=':', font=(self.font, F_SIZE['S']))
+        self.label_memo_second.pack(side=tk.LEFT, fill=tk.X, padx=3)
+        self.memo_second = tk.Entry(self.month_frame, font=(self.font, F_SIZE['S']), width=3)
+        self.memo_second.pack(side=tk.LEFT, fill=tk.X, padx=5)
         
         # 本文
         self.memo_frame = tk.Frame(self.main_frame)
@@ -302,17 +305,17 @@ class MemoPad(tk.Frame):
         # チェックボックス
         self.check_frame = tk.Frame(self.main_frame)
         self.check_frame.pack(padx=40, pady=5, fill=tk.BOTH)
-        self.label_memo_check = tk.Label(self.title_frame, text='リマインドする', font=(self.font, F_SIZE['S']))
+        self.label_memo_check = tk.Label(self.check_frame, text='リマインドする', font=(self.font, F_SIZE['S']))
         self.label_memo_check.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_check = tk.Checkbutton(self.title_frame)
+        self.memo_check = tk.Checkbutton(self.check_frame)
         self.memo_check.pack(side=tk.LEFT, padx=5, pady=5)
 
         # メアド
         self.address_frame = tk.Frame(self.main_frame)
         self.address_frame.pack(padx=40, pady=5, fill=tk.BOTH)
-        self.label_memo_address = tk.Label(self.title_frame, text='メールアドレス', font=(self.font, F_SIZE['S']))
+        self.label_memo_address = tk.Label(self.address_frame, text='メールアドレス', font=(self.font, F_SIZE['S']))
         self.label_memo_address.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_address = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']))
+        self.memo_address = tk.Entry(self.address_frame, font=(self.font, F_SIZE['S']))
         self.memo_address.pack(side=tk.LEFT,padx=5, pady=5)
 
 # ---------------------------------------------------------------------------
