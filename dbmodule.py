@@ -46,9 +46,8 @@ def select_memo():
     c.execute("PRAGMA foreign_keys = ON")
     try:
         sql = """
-        SELECT id, name, category_name, maintext
-        FROM items as i, category as c
-        WHERE i.category_id = c.category_id
+        SELECT id, name, maintext
+        FROM items
         """
         result = c.execute(sql)
         print('取得完了')
@@ -66,29 +65,9 @@ def select_memo_one(id):
     try:
         sql = """
         SELECT id, name, maintext
-        FROM items, category
+        FROM items
         WHERE id = {}
         """.format(id)
-        result = c.execute(sql)
-        print('取得完了')
-    except:
-        print('取得エラー')
-    return list(result)
-
-# ---------------------------------------------------------------------------
-# カテゴリ別メモ取得
-# ---------------------------------------------------------------------------
-def select_memo_category(category):
-    result = []
-    c = sqlite3.connect(DBMANE)
-    c.execute("PRAGMA foreign_keys = ON")
-    try:
-        sql = """
-        SELECT id, name, category_name, maintext
-        FROM items as i, category as c
-        WHERE i.category_id = c.category_id
-        AND i.category_name = '{}'
-        """.format(category)
         result = c.execute(sql)
         print('取得完了')
     except:
@@ -151,62 +130,6 @@ def delete_memo(id):
         print('削除成功')
     except:
         print('削除エラー')
-
-# ---------------------------------------------------------------------------
-# カテゴリ全件取得
-# ---------------------------------------------------------------------------
-def select_category():
-    result = []
-    c = sqlite3.connect(DBMANE)
-    c.execute("PRAGMA foreign_keys = ON")
-    try:
-        sql = """
-        SELECT category_id, category_name
-        FROM category
-        """
-        result = c.execute(sql)
-        print('取得完了')
-    except:
-        print('取得エラー')
-    return list(result)
-
-# ---------------------------------------------------------------------------
-# カテゴリ名取得
-# ---------------------------------------------------------------------------
-def select_category_name(c_id):
-    result = []
-    c = sqlite3.connect(DBMANE)
-    c.execute("PRAGMA foreign_keys = ON")
-    try:
-        sql = """
-        SELECT category_name
-        FROM category as c
-        WHERE c.category_id = {}
-        """.format(c_id)
-        result = c.execute(sql)
-        print('取得完了')
-    except:
-        print('取得エラー')
-    return list(result)
-
-# ---------------------------------------------------------------------------
-# カテゴリID取得
-# ---------------------------------------------------------------------------
-def select_category_id(c_name):
-    result = []
-    c = sqlite3.connect(DBMANE)
-    c.execute("PRAGMA foreign_keys = ON")
-    try:
-        sql = """
-        SELECT category_id
-        FROM category as c
-        WHERE c.category_name = '{}'
-        """.format(c_name)
-        result = c.execute(sql)
-        print('取得完了')
-    except:
-        print('取得エラー')
-    return list(result)
 
 # ---------------------------------------------------------------------------
 # カテゴリ登録

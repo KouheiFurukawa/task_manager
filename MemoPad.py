@@ -209,7 +209,7 @@ class MemoPad(tk.Frame):
         # SQLからアイテム取得
         for i in db.select_memo():
             print(i)
-            text = i[3].replace('\n', ' ')
+            text = i[2].replace('\n', ' ')
             self.main_tree.insert('', tk.END, iid=i[0], values=(i[1], text[0:30]))
         self.main_tree.pack(side=tk.RIGHT, fill=tk.Y)
         
