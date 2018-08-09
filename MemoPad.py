@@ -29,23 +29,11 @@ class MemoPad(tk.Frame):
         self.charset = 'utf-8'  # 使用文字コード(ただし，iniファイルは常時UTF-8)
         self.edit_flag = False  # 編集状態時の移動制限
         db.create_database()  # (ない場合)DB初期生成
-        self.menu_create()
         self.home()
     # ---------------------------------------------------------------------------
     # フレーム生成
     #
     # アプリ本体で動作する大枠を生成．
-    # ---------------------------------------------------------------------------
-    # メニューバー生成
-    # ---------------------------------------------------------------------------
-    def menu_create(self):
-        
-        # 既に存在している場合はメニューを破棄して再生成
-        try:
-            self.menu_frame.destroy()
-        except:
-            pass
-
     # ---------------------------------------------------------------------------
     # メインフレーム生成
     # ---------------------------------------------------------------------------
@@ -297,20 +285,20 @@ class MemoPad(tk.Frame):
         self.memo_input.pack()
 
         # チェックボックス
-        self.title_frame = tk.Frame(self.main_frame)
-        self.title_frame.pack(padx=40, pady=5, fill=tk.BOTH)
-        self.label_memo_title = tk.Label(self.title_frame, text='リマインドする', font=(self.font, F_SIZE['S']))
-        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_title = tk.Checkbutton(self.title_frame)
-        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.check_frame = tk.Frame(self.main_frame)
+        self.check_frame.pack(padx=40, pady=5, fill=tk.BOTH)
+        self.label_memo_check = tk.Label(self.title_frame, text='リマインドする', font=(self.font, F_SIZE['S']))
+        self.label_memo_check.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.memo_check = tk.Checkbutton(self.title_frame)
+        self.memo_check.pack(side=tk.LEFT, padx=5, pady=15)
 
         # メアド
-        self.title_frame = tk.Frame(self.main_frame)
-        self.title_frame.pack(padx=40, pady=5, fill=tk.BOTH)
-        self.label_memo_title = tk.Label(self.title_frame, text='メールアドレス', font=(self.font, F_SIZE['S']))
-        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_title = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']))
-        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.address_frame = tk.Frame(self.main_frame)
+        self.address_frame.pack(padx=40, pady=5, fill=tk.BOTH)
+        self.label_memo_address = tk.Label(self.title_frame, text='メールアドレス', font=(self.font, F_SIZE['S']))
+        self.label_memo_address.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.memo_address = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']))
+        self.memo_address.pack(side=tk.LEFT,padx=5, pady=15)
 
 # ---------------------------------------------------------------------------
 # メイン処理
