@@ -215,7 +215,7 @@ class MemoPad(tk.Frame):
         # 機能ラベル
         self.main_create(ROOT_WIDTH, ROOT_HEIGHT)
         self.label_menuname = tk.Label(self.main_frame, text='新規作成', width=15, font=(self.font, F_SIZE['L']))
-        self.label_menuname.pack(padx=5, pady=15)
+        self.label_menuname.pack(padx=5, pady=5)
         self.make_memo_frame()
         
         self.edit_frame = tk.Frame(self.main_frame)
@@ -288,13 +288,29 @@ class MemoPad(tk.Frame):
         # 本文
         self.memo_frame = tk.Frame(self.main_frame)
         self.memo_frame.pack()
-        self.memo_input = tk.Text(self.memo_frame, height=12, font=(self.font, F_SIZE['S']))
+        self.memo_input = tk.Text(self.memo_frame, height=10, font=(self.font, F_SIZE['S']))
         
         # 本文スクロール
         self.memo_scroll = tk.Scrollbar(self.memo_frame, orient=tk.VERTICAL, command=self.memo_input.yview)
         self.memo_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.memo_input['yscrollcommand'] = self.memo_scroll.set
         self.memo_input.pack()
+
+        # チェックボックス
+        self.title_frame = tk.Frame(self.main_frame)
+        self.title_frame.pack(padx=40, pady=5, fill=tk.BOTH)
+        self.label_memo_title = tk.Label(self.title_frame, text='リマインドする', font=(self.font, F_SIZE['S']))
+        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.memo_title = tk.Checkbutton(self.title_frame)
+        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+
+        # メアド
+        self.title_frame = tk.Frame(self.main_frame)
+        self.title_frame.pack(padx=40, pady=5, fill=tk.BOTH)
+        self.label_memo_title = tk.Label(self.title_frame, text='メールアドレス', font=(self.font, F_SIZE['S']))
+        self.label_memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
+        self.memo_title = tk.Entry(self.title_frame, font=(self.font, F_SIZE['S']))
+        self.memo_title.pack(side=tk.LEFT, fill=tk.X, padx=5)
 
 # ---------------------------------------------------------------------------
 # メイン処理
