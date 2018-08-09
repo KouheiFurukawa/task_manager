@@ -103,9 +103,9 @@ def update_memo(memo):
         print(memo)
         sql = """
         UPDATE items
-        SET name = '{}', category_id = {}, maintext = '{}'
+        SET name = '{}', category_id = 1, maintext = '{}'
         WHERE id = {}
-        """.format(memo[0], memo[1], memo[2], memo[3])
+        """.format(memo[0], memo[1], memo[2])
         c.execute(sql)
         c.commit()
         c.close()

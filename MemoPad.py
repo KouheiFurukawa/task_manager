@@ -298,7 +298,7 @@ class MemoPad(tk.Frame):
         self.label_menuname.pack(padx=5, pady=15)
         self.make_memo_frame()
         self.memo_title.insert(tk.END, memo[1])
-        self.memo_input.insert(tk.END, memo[3])
+        self.memo_input.insert(tk.END, memo[2])
         
         # 登録ボタン
         self.submit_update = tk.Button(self.main_frame, text='更新', width=15, font=(self.font, F_SIZE['S']))
