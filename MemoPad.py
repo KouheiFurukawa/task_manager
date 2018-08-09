@@ -12,12 +12,11 @@ import dbmodule as db
 # アプリ定数
 TITLE = 'task_manager'
 CONFIGNAME = 'config/config.ini'
-ROOT_WIDTH = 900
+ROOT_WIDTH = 800
 ROOT_HEIGHT = 480
 MENU_WIDTH = 180
 MAIN_WIDTH = ROOT_WIDTH - MENU_WIDTH
 
-MENU_ITEM = ['一覧表示', '新規作成']
 CHAR_SET = ['utf-8', 'Unicode', 'Shift-JIS']
 CHAR_FONT = ['メイリオ', 'ＭＳ ゴシック', '游ゴシック']
 F_SIZE = {'L':20, 'M':15, 'S':10}   # 文字サイズ
@@ -48,55 +47,11 @@ class MemoPad(tk.Frame):
     # ---------------------------------------------------------------------------
     def menu_create(self):
         
-        # 画面遷移
-        def move(mv):
-            # 一覧表示
-            if mv.widget['text'] == MENU_ITEM[0]:
-                self.home()
-            # カテゴリ別表示
-            elif mv.widget['text'] == MENU_ITEM[1]:
-                self.insert_memo()
-
-        # メニューボタン
-        def button_action(event):
-            # はい(機能移動)
-            def submit_yes(event):
-                sub_win.destroy()
-                move(mv)
-
-            # いいえ(中断)
-            def submit_no(event):
-                sub_win.destroy()
-                return
-            
-            mv = event
-            if self.edit_flag == True:
-                # サブウィンドウ
-                sub_win = sw.SubWindow('移動確認', '編集中です。他の画面に移動しますか？', self.font)
-                # はいボタン
-                yes_button = tk.Button(sub_win.frame, text='はい', width=8, font=(self.font, F_SIZE['S']))
-                yes_button.bind('<1>', submit_yes)
-                yes_button.pack(side=tk.LEFT, padx=5, pady=5)
-                # いいえボタン
-                no_button = tk.Button(sub_win.frame, text='いいえ', width=8, font=(self.font, F_SIZE['S']))
-                no_button.bind('<1>', submit_no)
-                no_button.pack(side=tk.LEFT, padx=5, pady=5)
-            else:
-                move(mv)
-        
         # 既に存在している場合はメニューを破棄して再生成
         try:
             self.menu_frame.destroy()
         except:
             pass
-        
-        # 各メニュー生成
-        self.menu_frame = tk.Frame(self, width=MENU_WIDTH, height=ROOT_HEIGHT)
-        self.menu_frame.pack(anchor=tk.NW, side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH)
-        for i in MENU_ITEM:
-            self.b = tk.Button(self.menu_frame, text=i, width=15, font=(self.font, F_SIZE['S']))
-            self.b.bind('<1>', button_action)
-            self.b.pack()
 
     # ---------------------------------------------------------------------------
     # メインフレーム生成
@@ -135,6 +90,10 @@ class MemoPad(tk.Frame):
                 ok_button = tk.Button(sub_win.frame, text='OK', width=8, font=(self.font, F_SIZE['S']))
                 ok_button.bind('<1>', submit_ok)
                 ok_button.pack(side=tk.LEFT, padx=5, pady=5)
+        
+        # 登録してサブウィンドウを表示
+        def submit_newcreate(event):
+            self.insert_memo()
         
         # 削除
         def submit_delete(event):
@@ -183,7 +142,7 @@ class MemoPad(tk.Frame):
 
         # 機能ラベル
         self.main_create(MAIN_WIDTH, ROOT_HEIGHT)
-        self.label_menuname = tk.Label(self.main_frame, text=MENU_ITEM[0], width=15, font=(self.font, F_SIZE['L']))
+        self.label_menuname = tk.Label(self.main_frame, text='一覧表示', width=15, font=(self.font, F_SIZE['L']))
         self.label_menuname.pack(padx=5, pady=15)
         
         # ツリービュー
@@ -222,6 +181,9 @@ class MemoPad(tk.Frame):
         self.button_delete = tk.Button(self.edit_frame, text='削除', width=8, font=(self.font, F_SIZE['S']))
         self.button_delete.bind('<1>', submit_delete)
         self.button_delete.pack(side=tk.LEFT, padx=15, pady=5)
+        self.button_create = tk.Button(self.edit_frame, text='新規作成', width=8, font=(self.font, F_SIZE['S']))
+        self.button_create.bind('<1>', submit_newcreate)
+        self.button_create.pack(side=tk.LEFT, padx=15, pady=5)
         print(self.main_tree.focus())
     
     # ---------------------------------------------------------------------------
@@ -249,20 +211,32 @@ class MemoPad(tk.Frame):
             ok_button = tk.Button(sub_win.frame, text='OK', width=8, font=(self.font, F_SIZE['S']))
             ok_button.bind('<1>', submit_ok)
             ok_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        # 戻る
+        def submit_return(event):
+            self.home()
         
         # 編集中フラグ設定
         self.edit_flag = True
 
         # 機能ラベル
         self.main_create(MAIN_WIDTH, ROOT_HEIGHT)
-        self.label_menuname = tk.Label(self.main_frame, text=MENU_ITEM[1], width=15, font=(self.font, F_SIZE['L']))
+        self.label_menuname = tk.Label(self.main_frame, text='新規作成', width=15, font=(self.font, F_SIZE['L']))
         self.label_menuname.pack(padx=5, pady=15)
         self.make_memo_frame()
         
+        self.edit_frame = tk.Frame(self.main_frame)
+        self.edit_frame.pack(padx=15, pady=5)
+
         # 登録ボタン
-        self.submit_create = tk.Button(self.main_frame, text='登録', width=15, font=(self.font, F_SIZE['S']))
+        self.submit_create = tk.Button(self.main_frame, text='登録', width=8, font=(self.font, F_SIZE['S']))
         self.submit_create.bind('<1>', submit_create)
-        self.submit_create.pack(padx=5, pady=15)
+        self.submit_create.pack(side=tk.RIGHT, padx=15, pady=15)
+
+        # 戻るボタン
+        self.submit_return = tk.Button(self.main_frame, text='戻る', width=8, font=(self.font, F_SIZE['S']))
+        self.submit_return.bind('<1>', submit_return)
+        self.submit_return.pack(side=tk.RIGHT, padx=15, pady=15)
 
     # ---------------------------------------------------------------------------
     # 編集画面 
