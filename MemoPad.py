@@ -14,8 +14,6 @@ TITLE = 'task_manager'
 CONFIGNAME = 'config/config.ini'
 ROOT_WIDTH = 800
 ROOT_HEIGHT = 480
-MENU_WIDTH = 180
-MAIN_WIDTH = ROOT_WIDTH - MENU_WIDTH
 
 CHAR_SET = ['utf-8', 'Unicode', 'Shift-JIS']
 CHAR_FONT = ['メイリオ', 'ＭＳ ゴシック', '游ゴシック']
@@ -141,8 +139,8 @@ class MemoPad(tk.Frame):
         self.edit_flag = False
 
         # 機能ラベル
-        self.main_create(MAIN_WIDTH, ROOT_HEIGHT)
-        self.label_menuname = tk.Label(self.main_frame, text='一覧表示', width=15, font=(self.font, F_SIZE['L']))
+        self.main_create(ROOT_WIDTH, ROOT_HEIGHT)
+        self.label_menuname = tk.Label(self.main_frame, text='タスク一覧', width=15, font=(self.font, F_SIZE['L']))
         self.label_menuname.pack(padx=5, pady=15)
         
         # ツリービュー
@@ -220,7 +218,7 @@ class MemoPad(tk.Frame):
         self.edit_flag = True
 
         # 機能ラベル
-        self.main_create(MAIN_WIDTH, ROOT_HEIGHT)
+        self.main_create(ROOT_WIDTH, ROOT_HEIGHT)
         self.label_menuname = tk.Label(self.main_frame, text='新規作成', width=15, font=(self.font, F_SIZE['L']))
         self.label_menuname.pack(padx=5, pady=15)
         self.make_memo_frame()
@@ -267,7 +265,7 @@ class MemoPad(tk.Frame):
         self.edit_flag = True
 
         # 機能ラベル
-        self.main_create(MAIN_WIDTH, ROOT_HEIGHT)
+        self.main_create(ROOT_WIDTH, ROOT_HEIGHT)
         self.label_menuname = tk.Label(self.main_frame, text='メモ編集', width=15, font=(self.font, F_SIZE['L']))
         self.label_menuname.pack(padx=5, pady=15)
         self.make_memo_frame()
