@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-# tkinter
 import tkinter as tk
 import tkinter.ttk as ttk
-# コンフィグ用
+
 import configparser as cp
 import os
-# モジュール
+
 import subwindow as sw
 import dbmodule as db
 
@@ -15,13 +14,9 @@ CONFIGNAME = 'config/config.ini'
 ROOT_WIDTH = 800
 ROOT_HEIGHT = 480
 
-CHAR_SET = ['utf-8', 'Unicode', 'Shift-JIS']
-CHAR_FONT = ['メイリオ', 'ＭＳ ゴシック', '游ゴシック']
 F_SIZE = {'L':20, 'M':15, 'S':10}   # 文字サイズ
 
 
-# ---------------------------------------------------------------------------
-# memopad
 # ---------------------------------------------------------------------------
 # メインフレーム(アプリ本体)
 # ---------------------------------------------------------------------------
@@ -30,8 +25,8 @@ class MemoPad(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.pack(fill=tk.BOTH)
-        self.font = CHAR_FONT[0]    # 使用フォント
-        self.charset = CHAR_SET[0]  # 使用文字コード(ただし，iniファイルは常時UTF-8)
+        self.font = 'メイリオ'    # 使用フォント
+        self.charset = 'utf-8'  # 使用文字コード(ただし，iniファイルは常時UTF-8)
         self.edit_flag = False  # 編集状態時の移動制限
         db.create_database()  # (ない場合)DB初期生成
         self.menu_create()

@@ -85,7 +85,6 @@ def insert_memo(memo):
         INSERT INTO items(name, category_id, maintext)
         VALUES('{}', {}, '{}')
         """.format(memo[0], 1, memo[1])
-        print(sql)
         c.execute(sql)
         c.commit()
         c.close()
