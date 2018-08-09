@@ -17,7 +17,7 @@ ROOT_HEIGHT = 480
 MENU_WIDTH = 180
 MAIN_WIDTH = ROOT_WIDTH - MENU_WIDTH
 
-MENU_ITEM = ['一覧表示', '新規作成', 'アプリ設定']
+MENU_ITEM = ['一覧表示', '新規作成']
 CHAR_SET = ['utf-8', 'Unicode', 'Shift-JIS']
 CHAR_FONT = ['メイリオ', 'ＭＳ ゴシック', '游ゴシック']
 F_SIZE = {'L':20, 'M':15, 'S':10}   # 文字サイズ
@@ -62,9 +62,6 @@ class MemoPad(tk.Frame):
             # カテゴリ別表示
             elif mv.widget['text'] == MENU_ITEM[1]:
                 self.insert_memo()
-            # アプリ設定
-            elif mv.widget['text'] == MENU_ITEM[2]:
-                self.app_config()
 
         # メニューボタン
         def button_action(event):
@@ -128,25 +125,6 @@ class MemoPad(tk.Frame):
     # ホーム画面 
     # ---------------------------------------------------------------------------
     def home(self):
-        
-        # ファイル出力
-        def submit_output(event):
-            # ok
-            def submit_ok(event):
-                sub_win.destroy()
-                
-            # 項目指定確認
-            if self.main_tree.focus().isdigit():
-                memo = db.select_memo_one(self.main_tree.focus())
-                self.output_file(memo[0][1], memo[0][3])
-            else:
-                # サブウィンドウ
-                sub_win = sw.SubWindow('エラー', '出力する項目を指定してください', self.font)
-                ok_button = tk.Button(sub_win.frame, text='OK', width=8, font=(self.font, F_SIZE['S']))
-                ok_button.bind('<1>', submit_ok)
-                ok_button.pack(side=tk.LEFT, padx=5, pady=5)
-                
-
         # 編集画面へ
         def submit_update(event):
             # ok
@@ -244,9 +222,6 @@ class MemoPad(tk.Frame):
         # 出力/編集/削除
         self.edit_frame = tk.Frame(self.main_frame)
         self.edit_frame.pack(padx=5, pady=5)
-        self.button_output = tk.Button(self.edit_frame, text='出力', width=8, font=(self.font, F_SIZE['S']))
-        self.button_output.bind('<1>', submit_output)
-        self.button_output.pack(side=tk.LEFT, padx=15, pady=5)
         self.button_update = tk.Button(self.edit_frame, text='編集', width=8, font=(self.font, F_SIZE['S']))
         self.button_update.bind('<1>', submit_update)
         self.button_update.pack(side=tk.LEFT, padx=15, pady=5)
@@ -359,76 +334,6 @@ class MemoPad(tk.Frame):
         self.memo_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.memo_input['yscrollcommand'] = self.memo_scroll.set
         self.memo_input.pack()
-
-    # ---------------------------------------------------------------------------
-    # アプリ設定
-    # ---------------------------------------------------------------------------
-    def app_config(self):
-        
-        # コンフィグ変更の確認
-        def submit_config(event):
-            # はい
-            def submit_yes(event):
-                self.config_write(self.combo_charset.get(), self.combo_font.get())
-                self.menu_create()
-                self.app_config()
-                sub_win.destroy()
-
-            # いいえ
-            def submit_no(event):
-                sub_win.destroy()
-
-            # Yes/Noウィンドウ
-            sub_win = sw.SubWindow('変更確認', '設定を変更しますか？', self.font)
-            # はいボタン
-            yes_button = tk.Button(sub_win.frame, text='はい', width=8, font=(self.font, F_SIZE['S']))
-            yes_button.bind('<1>', submit_yes)
-            yes_button.pack(side=tk.LEFT, padx=5, pady=5)
-        
-            # いいえボタン
-            no_button = tk.Button(sub_win.frame, text='いいえ', width=8, font=(self.font, F_SIZE['S']))
-            no_button.bind('<1>', submit_no)
-            no_button.pack(side=tk.LEFT, padx=5, pady=5)
-        
-        # 編集中フラグ設定
-        self.edit_flag = False
-
-        # 機能ラベル
-        self.main_create(MAIN_WIDTH, ROOT_HEIGHT)
-        self.label_menuname = tk.Label(self.main_frame, text=MENU_ITEM[3], width=15, font=(self.font, F_SIZE['L']))
-        self.label_menuname.pack(padx=5, pady=15)
-        
-        # 文字コード設定
-        self.charset_frame = tk.Frame(self.main_frame)
-        self.charset_frame.pack()
-        self.label_charset = tk.Label(self.charset_frame, text='出力文字コード', width=15, font=(self.font, F_SIZE['S']))
-        self.label_charset.pack(side=tk.LEFT, padx=5, pady=5)
-        self.combo_charset = ttk.Combobox(self.charset_frame, values=CHAR_SET, width=15, \
-            state='readonly', font=(self.font, F_SIZE['S']))
-        self.combo_charset.current(0)
-        self.combo_charset.pack(side=tk.LEFT, padx=5, pady=5)
-        self.label_charset_now = tk.Label(self.charset_frame, anchor=tk.W, text=('現在の設定：%s' % self.charset), \
-            width=30, font=(self.font, F_SIZE['S']))
-        self.label_charset_now.pack(side=tk.LEFT, padx=5, pady=5)
-
-        # フォント設定
-        self.font_frame = tk.Frame(self.main_frame)
-        self.font_frame.pack()
-        self.label_font = tk.Label(self.font_frame, text='フォント', width=15, font=(self.font, F_SIZE['S']))
-        self.label_font.pack(side=tk.LEFT, padx=5, pady=5)
-        self.combo_font = ttk.Combobox(self.font_frame, values=CHAR_FONT, width=15, \
-            state='readonly', font=(self.font, F_SIZE['S']))
-        self.combo_font.current(0)
-        self.combo_font.pack(side=tk.LEFT, padx=5, pady=5)
-        self.label_charset_now = tk.Label(self.font_frame, anchor=tk.W, text=('現在の設定：%s' % self.font), \
-            width=30, font=(self.font, F_SIZE['S']))
-        self.label_charset_now.pack(side=tk.LEFT, padx=5, pady=5)
-        
-        # 決定
-        self.submit_config = tk.Button(self.main_frame, text='決定', width=15, font=(self.font, F_SIZE['S']))
-        self.submit_config.bind('<1>', submit_config)
-        self.submit_config.pack(padx=5, pady=5)
-
 
 # ---------------------------------------------------------------------------
 # メイン処理
