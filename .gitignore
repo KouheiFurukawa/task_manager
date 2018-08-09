@@ -1,0 +1,7 @@
+*.vscode
+config
+database
+files
+__pycache__
+README.md
+.idea/
