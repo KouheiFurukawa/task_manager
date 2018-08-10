@@ -7,6 +7,7 @@ import os
 
 import subwindow as sw
 import dbmodule as db
+import slack_sender
 
 # アプリ定数
 TITLE = 'task_manager'
@@ -177,7 +178,6 @@ class MemoPad(tk.Frame):
             def submit_ok(event):
                 sub_win.destroy()
                 self.home()
-            
             title = str(self.memo_month.get() + '/' + self.memo_day.get() + ' ' + self.memo_hour.get() + ':' + self.memo_second.get())
             # タイトルが1文字以上20文字以下の場合のみ登録処理
             if len(title) < 1 :
@@ -187,6 +187,8 @@ class MemoPad(tk.Frame):
             else:
                 memo = [title, self.memo_input.get('1.0', tk.END)]
                 db.insert_memo(memo)
+                msg = 'タスクを登録しました: ' + self.memo_input.get('1.0', tk.END) + '期限: ' + title
+                slack_sender.send(msg)
                 # サブウィンドウ
                 sub_win = sw.SubWindow('登録完了', 'メモを登録しました！', self.font)
             ok_button = tk.Button(sub_win.frame, text='OK', width=8, font=(self.font, F_SIZE['S']))
