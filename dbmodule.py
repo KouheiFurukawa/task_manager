@@ -80,7 +80,6 @@ def select_memo_one(id):
 def insert_memo(memo):
     c = sqlite3.connect(DBMANE)
     try:
-        print(memo)
         sql = """
         INSERT INTO items(name, category_id, maintext)
         VALUES('{}', {}, '{}')
