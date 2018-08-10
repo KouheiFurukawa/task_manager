@@ -188,7 +188,8 @@ class MemoPad(tk.Frame):
                 memo = [title, self.memo_input.get('1.0', tk.END)]
                 db.insert_memo(memo)
                 msg = 'タスクを登録しました: ' + self.memo_input.get('1.0', tk.END) + '期限: ' + title
-                slack_sender.send(msg)
+                if self.val.get() == 'A':
+                    slack_sender.send(msg)
                 # サブウィンドウ
                 sub_win = sw.SubWindow('登録完了', 'メモを登録しました！', self.font)
             ok_button = tk.Button(sub_win.frame, text='OK', width=8, font=(self.font, F_SIZE['S']))
@@ -305,20 +306,14 @@ class MemoPad(tk.Frame):
         self.memo_input.pack()
 
         # チェックボックス
+        self.val = tk.StringVar()
+        self.val.set('B')
         self.check_frame = tk.Frame(self.main_frame)
         self.check_frame.pack(padx=40, pady=5, fill=tk.BOTH)
-        self.label_memo_check = tk.Label(self.check_frame, text='リマインドする', font=(self.font, F_SIZE['S']))
+        self.label_memo_check = tk.Label(self.check_frame, text='Slackに通知する', font=(self.font, F_SIZE['S']))
         self.label_memo_check.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_check = tk.Checkbutton(self.check_frame)
+        self.memo_check = tk.Checkbutton(self.check_frame, variable=self.val, onvalue='A', offvalue='B')
         self.memo_check.pack(side=tk.LEFT, padx=5, pady=5)
-
-        # メアド
-        self.address_frame = tk.Frame(self.main_frame)
-        self.address_frame.pack(padx=40, pady=5, fill=tk.BOTH)
-        self.label_memo_address = tk.Label(self.address_frame, text='メールアドレス', font=(self.font, F_SIZE['S']))
-        self.label_memo_address.pack(side=tk.LEFT, fill=tk.X, padx=5)
-        self.memo_address = tk.Entry(self.address_frame, font=(self.font, F_SIZE['S']))
-        self.memo_address.pack(side=tk.LEFT,padx=5, pady=5)
 
 # ---------------------------------------------------------------------------
 # メイン処理
